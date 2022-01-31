@@ -23,13 +23,55 @@ const typeDefs = gql`
     }
     
     type Cliente{
-        id: ID!
+        id: ID
         nombre:String!
         apellido:String!
         empresa:String!
         email:String!
         telefono:String!
         vendedor: ID!
+    }
+    
+    type PedidoGrupo{
+        id:ID
+        cantidad: Int
+    }
+    
+    type Pedido{
+        id: ID
+        pedido:[PedidoGrupo]!
+        total: Float!
+        cliente:ID!
+        vendedor: ID!
+        fecha: String
+        estado: Estado!
+        
+    }
+
+    type Clientesinid{
+        nombre:String!
+        apellido:String!
+        empresa:String!
+        email:String!
+        telefono:String!
+        vendedor: ID!
+    }
+    
+    type TopCliente{
+        total: Float
+        cliente:[Clientesinid]
+    }
+
+    type Usuariosinid{
+        nombre: String
+        apellidos: String
+        email: String
+        creado: String
+    }
+    
+    type TopVendedor{
+        total: Float
+        vendedor:[Usuariosinid]
     }
     
     input UsuarioInput{
@@ -49,6 +91,25 @@ const typeDefs = gql`
         existencia: Int!
         precio:Float!
     }
+
+    input PedidoProductoInput{
+        id:ID
+        cantidad: Int
+    }
+    
+    enum Estado{
+        PENDIENTE
+        COMPLETADO
+        CANCELADO
+    }
+    
+    input PedidoInput{
+        pedido:[PedidoProductoInput]!
+        total: Float
+        cliente:ID!
+        estado: Estado
+    }
+    
     
     input ClienteInput{
         nombre:String!
@@ -59,7 +120,7 @@ const typeDefs = gql`
     }
     
     type Query{
-        obtenerUsuario:Usuario
+        obtenerUsuario(token:String!):Usuario
 
         obtenerProdutos: [Producto]
         obtenerProducto(id: ID!): Producto
@@ -67,6 +128,16 @@ const typeDefs = gql`
         obtenerClientes: [Cliente]
         obtenerClientesVendedor:[Cliente]
         obtenerCliente(id: ID!):Cliente
+        
+        obtenerPedidos: [Pedido]
+        obtenerPedidosVendedor: [Pedido]
+        obtenerPedido(id:ID!):Pedido
+        obtenerPedidosEstado(estado: Estado!):[Pedido]
+        
+        obtenerMejoresClientes:[TopCliente]
+        obtenerMejoresVendedores:[TopVendedor]
+        
+        buscarProducto(texto:String!):[Producto]
     }
     type Mutation{
         nuevoUsuario(input: UsuarioInput): Usuario
@@ -77,6 +148,12 @@ const typeDefs = gql`
         eliminarProducto(id: ID!):String
         
         nuevoCliente(input: ClienteInput):Cliente
+        actualizarCliente(id:ID!, input:ClienteInput):Cliente
+        eliminarCliente(id: ID!):String
+        
+        nuevoPedido(input: PedidoInput):Pedido
+        actualizarPedido(id:ID!, input: PedidoInput):Pedido
+        eliminarPedido(id:ID!):String
     }
     
 `;

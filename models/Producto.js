@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const Usuario = mongoose.Schema({
+const Producto = mongoose.Schema({
     nombre:{
         type: String,
         required: true,
@@ -22,4 +22,6 @@ const Usuario = mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("Producto", Usuario)
+Producto.index({nombre:'text'});
+
+module.exports = mongoose.model("Producto", Producto)

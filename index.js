@@ -1,4 +1,5 @@
 const { ApolloServer } = require('apollo-server');
+const  {ApolloServerPluginLandingPageDisabled} = require('apollo-server-core');
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
 const jwt = require("jsonwebtoken")
@@ -13,20 +14,24 @@ const server = new ApolloServer({
 
             const token = req.headers['authorization'] || '';
 
+
+
             if (token){
                 try {
-                    const usuario = jwt.verify(token.replace("Bearer ",""), process.env.SECRET);
-                    console.log(usuario)
+                    const usuario = jwt.verify(token.replace("Bearer ", ""), process.env.SECRET);
+
                     return{
                         usuario
                     }
-                
 
                 }catch (e) {
                     console.log(e);
                 }
             }
-        }
+        },
+        plugins:[
+            // ApolloServerPluginLandingPageDisabled(),
+        ]
 });
 
 server.listen( 4000).then( ({url}) => {
