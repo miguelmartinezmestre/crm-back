@@ -2,7 +2,7 @@ import Usuario from "./models/Usuario"
 import Producto from "./models/Producto"
 import Cliente from "./models/Cliente"
 import Pedido from "./models/Pedido"
-import bcrypt from "bcryptjs"
+import {compare,hash,genSalt} from "bcryptjs"
 import {sign} from "jsonwebtoken"
 require("dotenv").config();
 
@@ -59,6 +59,7 @@ export const resolvers={
         },
         obtenerCliente:async (_, {id},context)=>{
             try {
+                console.log(id)
                 const cliente = await Cliente.findById(id);
                 if (!cliente){
                     throw new Error("Cliente no encontrado");
@@ -177,8 +178,8 @@ export const resolvers={
                 throw new Error("El usuario ya existe");
             }
 
-            const salt  = await bcrypt.genSalt(10);
-            input.password = await bcrypt.hash(password, salt);
+            const salt  = await genSalt(10);
+            input.password = await hash(password, salt);
 
             try{
                 const usuario = new Usuario(input);
@@ -197,13 +198,13 @@ export const resolvers={
                 throw new Error("no existe");
             }
 
-            const passwordCorrecto = await bcrypt.compare(password, existe.password);
+            const passwordCorrecto = await compare(password, existe.password);
             if (!passwordCorrecto){
                 throw new Error("pass mal");
             }
         
             return{
-                token: crearToken(existe, process.env.SECRET, "24h")
+                token: crearToken(existe, process.env.SECRET, "7d")
             }
         },
         nuevoProducto: async (_, {input})=>{
