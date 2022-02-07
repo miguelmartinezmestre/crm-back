@@ -1,5 +1,5 @@
 {
-  "name": "untitled5",
+  "name": "crm-back",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -9,10 +9,8 @@
   "dependencies": {
     "apollo-server": "^3.6.2",
     "apollo-server-core": "^3.6.2",
-    "apollo-server-express": "^3.6.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^14.2.0",
-    "express": "^4.17.2",
     "graphql": "^16.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.7",
