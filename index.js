@@ -1,7 +1,7 @@
 const { ApolloServer } = require('apollo-server');
-const  {ApolloServerPluginLandingPageDisabled} = require('apollo-server-core');
+const  {ApolloServerPluginLandingPageGraphQLPlayground} = require('apollo-server-core');
 const typeDefs = require('./typeDefs');
-const resolvers = require('./resolvers');
+const {getUser,resolvers} = require('./resolvers');
 const jwt = require("jsonwebtoken")
 require("dotenv").config();
 const conectardb = require("./db")
@@ -9,12 +9,8 @@ conectardb();
 const server = new ApolloServer({
         typeDefs,
         resolvers,
-        context: async({req})=>{
-            // console.log(req.headers['authorization'])
-
-            const token = req.headers['authorization'] || '';
-
-
+        context: async(context)=>{
+            const token = context.req.headers['authorization'] || '';
 
             if (token){
                 try {
@@ -30,7 +26,7 @@ const server = new ApolloServer({
             }
         },
         plugins:[
-            // ApolloServerPluginLandingPageDisabled(),
+           // ApolloServerPluginLandingPageGraphQLPlayground(),
         ]
 });
 

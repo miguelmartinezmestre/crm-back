@@ -6,6 +6,11 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 require("dotenv").config();
 
+const getUser = (req) =>{
+    console.log(req.headers)
+    
+}
+
 const crearToken = (usuario, secret, caducidad) => {
     const {id, email, nombre, apellido} = usuario;
     return jwt.sign({
@@ -13,14 +18,13 @@ const crearToken = (usuario, secret, caducidad) => {
         email,
         nombre,
         apellido
-    }, secret, {expiresIn: '24h'})
+    }, secret, {expiresIn: '7d'})
 }
 
 const resolvers={
     Query:{
-        obtenerUsuario: async (_, {token})=>{
-            const usuarioId = await jwt.verify(token, process.env.SECRET);
-            return usuarioId;
+        obtenerUsuario: async (_, {token},context)=>{
+            return context.usuario;
         },
         obtenerProdutos: async() =>{
             try {
@@ -188,7 +192,7 @@ const resolvers={
                 console.log(e)
             }
         },
-        autenticarUsuario: async (_, {input})=>{
+        autenticarUsuario: async (_, {input},{req,res})=>{
             const {email, password} = input;
 
             const existe = await Usuario.findOne({email});
@@ -201,7 +205,7 @@ const resolvers={
             if (!passwordCorrecto){
                 throw new Error("pass mal");
             }
-
+        
             return{
                 token: crearToken(existe, process.env.SECRET, "24h")
             }
@@ -308,7 +312,7 @@ const resolvers={
 
                 const pedido = new Pedido(input);
 
-                pedido.vendedor = context.usuario.id;
+                pedido.vendedor = getUser(context).id;
 
                 const resultado = await pedido.save();
                 return resultado;
@@ -371,4 +375,7 @@ const resolvers={
     }
 }
 
-module.exports = resolvers;
+module.exports = {
+    resolvers,
+    getUser
+};
