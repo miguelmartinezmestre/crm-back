@@ -1,6 +1,7 @@
-const { gql } = require("apollo-server");
+import { gql,  } from "apollo-server";
+import { DocumentNode } from "graphql";
 
-const typeDefs = gql`
+export const typeDefs: DocumentNode = gql`
     
     type Usuario{
         id: ID
@@ -157,4 +158,3 @@ const typeDefs = gql`
     }
     
 `;
-module.exports = typeDefs;

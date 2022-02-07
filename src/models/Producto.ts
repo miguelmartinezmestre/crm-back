@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
+import { Schema,model,Document } from "mongoose";
 
-const Producto = mongoose.Schema({
+const schema = new Schema({
     nombre:{
         type: String,
         required: true,
@@ -20,8 +20,12 @@ const Producto = mongoose.Schema({
         type: Date,
         default: Date.now(),
     },
-});
+})
+// @ts-nocheck
+schema.index({nombre:'text'});
 
-Producto.index({nombre:'text'});
+const Producto = model("Producto", schema);
 
-module.exports = mongoose.model("Producto", Producto)
+export default Producto;
+
+

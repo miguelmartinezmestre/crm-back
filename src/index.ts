@@ -1,11 +1,11 @@
-const { ApolloServer } = require('apollo-server');
-const  {ApolloServerPluginLandingPageGraphQLPlayground} = require('apollo-server-core');
-const typeDefs = require('./typeDefs');
-const {getUser,resolvers} = require('./resolvers');
-const jwt = require("jsonwebtoken")
+import { ApolloServer } from 'apollo-server'
+import  {ApolloServerPluginLandingPageGraphQLPlayground} from 'apollo-server-core'
+import  {typeDefs} from './typeDefs';
+import  {resolvers} from './resolvers'
+import {verify} from "jsonwebtoken"
 require("dotenv").config();
-const conectardb = require("./db")
-conectardb();
+import  {conectarDb} from "./db"
+conectarDb();
 const server = new ApolloServer({
         typeDefs,
         resolvers,
@@ -14,7 +14,7 @@ const server = new ApolloServer({
 
             if (token){
                 try {
-                    const usuario = jwt.verify(token.replace("Bearer ", ""), process.env.SECRET);
+                    const usuario = verify(token.replace("Bearer ", ""), process.env.SECRET);
 
                     return{
                         usuario

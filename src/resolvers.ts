@@ -1,19 +1,15 @@
-const Usuario = require("./models/Usuario")
-const Producto = require("./models/Producto")
-const Cliente = require("./models/Cliente")
-const Pedido = require("./models/Pedido")
-const bcrypt = require("bcryptjs")
-const jwt = require("jsonwebtoken")
+import Usuario from "./models/Usuario"
+import Producto from "./models/Producto"
+import Cliente from "./models/Cliente"
+import Pedido from "./models/Pedido"
+import bcrypt from "bcryptjs"
+import {sign} from "jsonwebtoken"
 require("dotenv").config();
 
-const getUser = (req) =>{
-    console.log(req.headers)
-    
-}
 
 const crearToken = (usuario, secret, caducidad) => {
     const {id, email, nombre, apellido} = usuario;
-    return jwt.sign({
+    return sign({
         id,
         email,
         nombre,
@@ -21,7 +17,7 @@ const crearToken = (usuario, secret, caducidad) => {
     }, secret, {expiresIn: '7d'})
 }
 
-const resolvers={
+export const resolvers={
     Query:{
         obtenerUsuario: async (_, {token},context)=>{
             return context.usuario;
@@ -312,7 +308,7 @@ const resolvers={
 
                 const pedido = new Pedido(input);
 
-                pedido.vendedor = getUser(context).id;
+                pedido.vendedor = context.usuario.id;
 
                 const resultado = await pedido.save();
                 return resultado;
@@ -375,7 +371,3 @@ const resolvers={
     }
 }
 
-module.exports = {
-    resolvers,
-    getUser
-};

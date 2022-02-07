@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
+import { Schema,model } from "mongoose";
 
-const Cliente = mongoose.Schema({
+const Cliente = model("Cliente", new Schema({
     nombre:{
         type: String,
         required: true,
@@ -32,10 +32,10 @@ const Cliente = mongoose.Schema({
         default: Date.now(),
     },
     vendedor:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required:true,
         ref: 'Usuario'
     }
-})
+}));
 
-module.exports = mongoose.model("Cliente", Cliente);
+export default Cliente;

@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
+import { Schema,model } from "mongoose";
 
-const Pedido = mongoose.Schema({
+const Pedido = model("Pedido", new Schema({
     pedido:{
         type: Array,
         required: true,
@@ -10,12 +10,12 @@ const Pedido = mongoose.Schema({
         required: true,
     },
     cliente:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref:'Cliente'
     },
     vendedor:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref:'Usuario'
     },
@@ -27,6 +27,7 @@ const Pedido = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-})
+}));
 
-module.exports = mongoose.model("Pedido", Pedido);
+
+export default Pedido;
