@@ -1,6 +1,7 @@
 import { Schema,model,Document } from "mongoose";
+import { ProductoType } from "../types";
 
-const schema = new Schema({
+const schema = new Schema<ProductoType>({
     nombre:{
         type: String,
         required: true,
@@ -24,7 +25,7 @@ const schema = new Schema({
 // @ts-nocheck
 schema.index({nombre:'text'});
 
-const Producto = model("Producto", schema);
+const Producto = model<ProductoType>("Producto", schema);
 
 export default Producto;
 

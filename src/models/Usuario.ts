@@ -1,6 +1,7 @@
 import { Schema,model } from "mongoose";
+import { UsuarioType } from "../types";
 
-const Usuario = model("Usuario", new Schema({
+const Usuario = model<UsuarioType>("Usuario", new Schema<UsuarioType>({
     nombre:{
         type: String,
         required: true,

@@ -1,6 +1,7 @@
 import { Schema,model } from "mongoose";
+import { PedidoType } from "../types";
 
-const Pedido = model("Pedido", new Schema({
+const Pedido = model<PedidoType>("Pedido", new Schema<PedidoType>({
     pedido:{
         type: Array,
         required: true,

@@ -1,6 +1,7 @@
 import { Schema,model } from "mongoose";
+import { ClienteType } from "../types";
 
-const Cliente = model("Cliente", new Schema({
+const Cliente = model<ClienteType>("Cliente", new Schema<ClienteType>({
     nombre:{
         type: String,
         required: true,
